@@ -81,6 +81,7 @@ endif()
 add_library(${LIBRARY_NAME} STATIC
   core.cc
   api/api.cc
+  file_output/file_output.c
   player/player.cc
   player/player_state.cc
   media_source/media.cc

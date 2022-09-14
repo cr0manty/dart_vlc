@@ -17,6 +17,7 @@
 // Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include "player/player.h"
+#include "file_output/file_output.h"
 
 #include <functional>
 
@@ -32,6 +33,22 @@ Player::Player(const std::vector<std::string>& cmd_arguments) {
     vlc_instance_ = VLC::Instance(static_cast<int32_t>(cmd_arguments.size()),
                                   c_array.get());
   }
+
+  vlc_instance_.logSet([] (int i, const libvlc_log_t* log, std::string string) {
+    auto addString = [](char* reutrnArr, const char* arr) {
+      strcat(reutrnArr, arr);
+    };
+
+    int len = string.size() + 20;
+    char* returnArr = new char[len];
+    sprintf(returnArr, "%c - ", i);
+
+    addString(returnArr, string.c_str());
+    strcat(returnArr, "\n\n");
+    printf("[LOG] %s", returnArr);
+    print_to_file(returnArr);
+  });
+
   vlc_media_player_ = VLC::MediaPlayer(vlc_instance_);
   vlc_media_list_player_ = VLC::MediaListPlayer(vlc_instance_);
   vlc_media_list_ = VLC::MediaList(vlc_instance_);
