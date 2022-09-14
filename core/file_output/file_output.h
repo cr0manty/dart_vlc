@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <unistd.h>
 #include <time.h>
 
 
@@ -19,7 +19,14 @@ char* get_timestamp() {
 void print_to_file(const char* data) {
     char* filename = (char*)malloc(150 * sizeof(char));
     char* timestamp = get_timestamp();
-    sprintf(filename,  "/home/parallels/Develop/DataArt/proto_device_application/logs/log_%s.txt", timestamp);
+
+    char cwd[100];
+    if (getcwd(cwd, sizeof(cwd)) == NULL) {
+        perror("getcwd() error");
+        return;
+    }
+
+    sprintf(filename,  "%s/logs/log_%s.txt", cwd, timestamp);
 
     FILE* file = fopen(filename, "a");
 

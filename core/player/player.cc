@@ -45,7 +45,6 @@ Player::Player(const std::vector<std::string>& cmd_arguments) {
 
     addString(returnArr, string.c_str());
     strcat(returnArr, "\n\n");
-    printf("[LOG] %s", returnArr);
     print_to_file(returnArr);
   });
 
